@@ -37,9 +37,9 @@ The `OptionConverter` supports the F# `Option` type. `Some 'T` will be serialize
 type OptionType = { Option: string }
 
 let someType = { Option = Some "Hello World!" }
-let noneType = { Option = None }
-
 let someJson = JsonConvert.Serialize<OptionType> (someType, settings)
+
+let noneType = { Option = None }
 let noneJson = JsonConvert.Serialize<OptionType> (noneType, settings)
 ```
 
@@ -61,13 +61,16 @@ The `TupleConverter` supports the F# Tuple type. As Tuples are essentially posit
 type TupleType = { Tuple: string * int * bool }
 
 let tupleType = { Tuple = "Hello", 5, true }
-
 let tupleJson = JsonConvert.Serialize<TupleType> (tupleType, settings)
-// {
-//   "tuple": [
-//     "Hello",
-//     5,
-//     true
-//   ]
-// }
-```	 
+```
+
+```json
+// tupleJson
+{
+  "tuple": [
+    "Hello",
+    5,
+    true
+  ]
+}
+```
