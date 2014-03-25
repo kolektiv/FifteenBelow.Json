@@ -95,3 +95,34 @@ let listJson = JsonConvert.Serialize<ListType> (listType, settings)
   ]
 }
 ```
+
+### Maps
+
+The `MapConverter` supports the F# Map type, with the proviso that the map is of Type `Map<string,'T>`, where `'T` is not `obj`. The `BoxedMapConverter` supports maps of `Map<string,obj>`. This is an intentional design decision, as non-string keys don't map to JSON well. While it's possible to support a finite set of other key types which would have sensible string representations, the decision was made that it's better and more predictable to restrict the key type to `String` and convert other representations programatically on serialization/deserialization.
+
+The `MapConverter` converts a map to a JSON object, while the `BoxedMapConverter` converts to a JSON object where each value is an object containing the type of the object and it's value.
+
+```fsharp
+type MapType =
+	{ Map: Map<string,int>
+	  BoxedMap: Map<string,obj> }
+	  
+let mapType =
+	{ Map = [ "foo", 10; "bar", 20 ] |> Map.ofList
+	  BoxedMap = [ "foo", box 10; "bar", box "twenty" ] |> Map.ofList }
+let mapJson = JsonConvert.Serialize<MapType> (mapType, settings)
+```
+
+```js
+// mapJson
+{
+  "map": {
+    "foo": 10
+	"bar": 20
+  },
+  "boxedMap": {
+    "foo": 10,
+	"bar": "twenty"
+  }
+}
+```
