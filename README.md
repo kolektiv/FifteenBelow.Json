@@ -135,7 +135,9 @@ let mapJson = JsonConvert.Serialize<MapType> (mapType, settings)
 
 ### Unions
 
-The `UnionConverter` supports F# Discriminated Unions. As Union Case types are essentially positional, individual cases are serialized as heterogeneous JSON arrays, within an object, where the key will be the case name. This decision was made to allow simple JavaScript, checking for the presence of a key within the serialized union object as a very basic form of pattern matching.
+The `UnionConverter` supports F# Discriminated Unions. As Union Case types are essentially positional, individual cases are serialized as heterogeneous JSON arrays, within an object, where the key will be the case name. This decision was made to allow simple JavaScript, checking for the presence of a key within the serialized union object as a very basic form of pattern matching. Note that case names will respect the contract resolver setting about key names (with these settings, they will be camel cased).
+
+Also note that as cases are resolved by name, changes to the naming of a Union case between serialization and deserialization will be likely to cause issues.
 
 ```fsharp
 type Union =
@@ -152,7 +154,7 @@ let unionJson = JsonConvert.Serialize<UnionType> (unionType, settings)
 // unionJson
 {
   "union": {
-    "First": [
+    "first": [
       "foo",
 	  10
 	]

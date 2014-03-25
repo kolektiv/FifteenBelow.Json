@@ -4,6 +4,7 @@ open System
 open System.Collections
 open Microsoft.FSharp.Reflection
 open Newtonsoft.Json
+open Newtonsoft.Json.Serialization
 
 
 [<AutoOpen>]
@@ -49,23 +50,33 @@ module internal Common =
 
     let tokenType () =
         json {
-            return! read (fun _ r -> r.TokenType) }
+            return! read (fun _ r -> 
+                r.TokenType) }
  
     let ignore () =
         json {
-            do! read (fun _ r -> r.Read () |> ignore) }
+            do! read (fun _ r -> 
+                r.Read () |> ignore) }
 
     let value () =
         json {
-            return! read (fun _ r -> r.Value) }
+            return! read (fun _ r -> 
+                r.Value) }
 
     let serialize (o: obj) =
         json {
-            do! write (fun s w -> s.Serialize (w, o)) }
+            do! write (fun s w -> 
+                s.Serialize (w, o)) }
  
     let deserialize (t: Type) =
         json {
-            return! read (fun s r -> s.Deserialize (r, t)) }
+            return! read (fun s r -> 
+                s.Deserialize (r, t)) }
+
+    let mapName (n: string) =
+        json {
+            return! read (fun s _ ->
+                (s.ContractResolver :?> DefaultContractResolver).GetResolvedPropertyName (n)) }
 
     let readArray next =
         json {
@@ -295,7 +306,7 @@ module internal Unions =
             let! caseName = value ()
             do! ignore ()
             
-            let case =  FSharpType.GetUnionCases (t) |> Array.find (fun x -> x.Name = string caseName)
+            let case =  FSharpType.GetUnionCases (t) |> Array.find (fun x -> String.Equals (string caseName, x.Name, StringComparison.OrdinalIgnoreCase))
             let types = case.GetFields () |> Array.map (fun f -> f.PropertyType)
             let! array = readArray (fun i -> types.[i])
             let union = FSharpValue.MakeUnion (case, array)
@@ -307,7 +318,8 @@ module internal Unions =
     let writeUnion (o: obj) =
         json {
             let case, fields = FSharpValue.GetUnionFields (o, o.GetType ())
-            let properties = [case.Name, box fields] |> Map.ofList
+            let! caseName = mapName case.Name
+            let properties = [caseName, box fields] |> Map.ofList
 
             do! writeObject (properties) }
 
