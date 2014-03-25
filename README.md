@@ -40,12 +40,10 @@ let someType = { Option = Some "Hello World!" }
 let noneType = { Option = None }
 
 let someJson = JsonConvert.Serialize<OptionType> (someType, settings)
-
 // {
-//   "option": "Hello World!"
+//     "option": "Hello World!"
 // }  
 
 let noneJson = JsonConvert.Serialize<OptionType> (noneType, settings)
-
 // {}
 ```
