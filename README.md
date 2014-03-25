@@ -10,7 +10,22 @@ Some trade-offs have been made between power and simplicity, and these are docum
 
 The converters should be added to an `IList<JsonConverter>` and set as Converters on `JsonSerializerSettings`, which can then be passed to the various serialization/deserialization methods available. The converters have no dependencies between them, so you can load only the ones which apply if desired. Examples given below use a JsonSerializerSettings like this:
 
+```fsharp
+let converters =
+    [ OptionConverter () :> JsonConverter
+      TupleConverter () :> JsonConverter
+      ListConverter () :> JsonConverter
+      MapConverter () :> JsonConverter
+      BoxedMapConverter () :> JsonConverter
+      UnionConverter () :> JsonConverter ] |> List.toArray :> IList<JsonConverter>
 
+let settings =
+    JsonSerializerSettings (
+        ContractResolver = CamelCasePropertyNamesContractResolver (), 
+        Converters = converters,
+        Formatting = Formatting.Indented,
+        NullValueHandling = NullValueHandling.Ignore)
+```
 
 ## Available Converters
 
