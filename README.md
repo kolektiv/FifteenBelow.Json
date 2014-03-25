@@ -4,7 +4,7 @@
 
 FifteenBelow.Json provides a set of `JsonConverter` types for the Newtonsoft.Json library, focused on providing _idiomatic_ serialization of common F# types. While Newtonsoft.Json is progressing native support for F#, we feel that the JSON structures emitted by these converters are slightly more human friendly (where possible).
 
-Some trade-offs have been made between power and simplicity, and these are documented where they apply to each converter in the following sections.
+Some trade-offs have been made between power and simplicity, and these are documented where they apply to each converter in the following sections. While the examples only show F# -> JSON, deserialization works as expected.
 
 ## Usage
 
@@ -29,9 +29,9 @@ let settings =
 
 ## Available Converters
 
-### Option<'T>
+### Options
 
-The `OptionConverter` supports the F# `Option<'T>` type. `Some 'T` will be serialized as `'T`, while `None` will be serialized as `null` (Newtonsoft.Json has settings to control the writing of `null` values to JSON).
+The `OptionConverter` supports the F# `Option` type. `Some 'T` will be serialized as `'T`, while `None` will be serialized as `null` (Newtonsoft.Json has settings to control the writing of `null` values to JSON).
 
 ```fsharp
 type OptionType = { Option: string }
@@ -47,3 +47,22 @@ let someJson = JsonConvert.Serialize<OptionType> (someType, settings)
 let noneJson = JsonConvert.Serialize<OptionType> (noneType, settings)
 // {}
 ```
+
+### Tuples
+
+The `TupleConverter` supports the F# Tuple type. As Tuples are essentially positional (and heterogeneous) data structures, they are serialized as JSON arrays (as arrays in JSON can contain heterogeneous types natively).
+
+```fsharp
+type TupleType = { Tuple: string * int * bool }
+
+let tupleType = { Tuple = "Hello", 5, true }
+
+let tupleJson = JsonConvert.Serialize<TupleType> (tupleType, settings)
+// {
+//   "tuple": [
+//     "Hello",
+//     5,
+//     true
+//   ]
+// }
+```	 
