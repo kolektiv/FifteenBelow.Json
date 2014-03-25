@@ -34,7 +34,7 @@ let settings =
 The `OptionConverter` supports the F# `Option<'T>` type. `Some 'T` will be serialized as `'T`, while `None` will be serialized as `null` (Newtonsoft.Json has settings to control the writing of `null` values to JSON).
 
 ```fsharp
-type OptionType = { Option: string
+type OptionType = { Option: string }
 
 let someType = { Option = Some "Hello World!" }
 let noneType = { Option = None }
