@@ -6,6 +6,10 @@ FifteenBelow.Json provides a set of `JsonConverter` types for the Newtonsoft.Jso
 
 Some trade-offs have been made between power and simplicity, and these are documented where they apply to each converter in the following sections. While the examples only show F# -> JSON, deserialization works as expected.
 
+## Installation
+
+FifteenBelow.Json is available on NuGet, with the package name *FifteenBelow.Json*.
+
 ## Usage
 
 The converters should be added to an `IList<JsonConverter>` and set as Converters on `JsonSerializerSettings`, which can then be passed to the various serialization/deserialization methods available. The converters have no dependencies between them, so you can load only the ones which apply if desired. Examples given below use a JsonSerializerSettings like this:
