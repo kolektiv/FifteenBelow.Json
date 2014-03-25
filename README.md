@@ -121,8 +121,14 @@ let mapJson = JsonConvert.Serialize<MapType> (mapType, settings)
 	"bar": 20
   },
   "boxedMap": {
-    "foo": 10,
-	"bar": "twenty"
+    "foo": {
+      "$type": "System.Int",
+	  "value": 10
+    },
+	"bar": {
+	  "$type": "System.String",
+	  "value": "twenty"
+	}
   }
 }
 ```
