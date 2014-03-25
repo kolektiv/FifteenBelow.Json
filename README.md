@@ -8,7 +8,7 @@ Some trade-offs have been made between power and simplicity, and these are docum
 
 ## Installation
 
-FifteenBelow.Json is available on NuGet, with the package name *FifteenBelow.Json*.
+FifteenBelow.Json is available on NuGet, with the package name __FifteenBelow.Json__.
 
 ## Usage
 
