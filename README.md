@@ -43,7 +43,7 @@ let noneType = { Option = None }
 let noneJson = JsonConvert.Serialize<OptionType> (noneType, settings)
 ```
 
-```json
+```js
 // someJson
 {
   "option": "Hello World"
@@ -64,7 +64,7 @@ let tupleType = { Tuple = "Hello", 5, true }
 let tupleJson = JsonConvert.Serialize<TupleType> (tupleType, settings)
 ```
 
-```json
+```js
 // tupleJson
 {
   "tuple": [
