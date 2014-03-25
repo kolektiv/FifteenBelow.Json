@@ -74,3 +74,24 @@ let tupleJson = JsonConvert.Serialize<TupleType> (tupleType, settings)
   ]
 }
 ```
+
+### Lists
+
+The `ListConverter` supports the F# List type. Lists are serialized as homogeneous JSON arrays.
+
+```fsharp
+type ListType = { List: string list }
+
+let listType = { List = ["Hello"; "World!"] }
+let listJson = JsonConvert.Serialize<ListType> (listType, settings)
+```
+
+```js
+// listJson
+{
+  "list": [
+    "Hello",
+	"World!"
+  ]
+}
+```
