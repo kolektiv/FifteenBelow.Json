@@ -21,8 +21,10 @@ The `OptionConverter` supports the F# `Option<'T>` type. `Some 'T` will be seria
 Serializing:
 ```fsharp
 type OptionType = { Option: string
+
 let someType = { Option = Some "Hello World!" }
 let noneType = { Option = None }
+
 let someJson = JsonConvert.Serialize<OptionType> (someType, settings)
 let noneJson = JsonConvert.Serialize<OptionType> (noneType, settings)
 ```
