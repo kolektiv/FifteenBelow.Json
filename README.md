@@ -27,7 +27,7 @@ let settings =
         NullValueHandling = NullValueHandling.Ignore)
 ```
 
-## Available Converters
+## Included Converters
 
 ### Options
 
