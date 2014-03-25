@@ -1,4 +1,4 @@
-﻿namespace FifteenBelow.Json
+namespace FifteenBelow.Json
 
 open System.Reflection
 open System.Runtime.InteropServices
@@ -8,7 +8,7 @@ open System.Runtime.InteropServices
 [<assembly: AssemblyConfiguration("Release")>]
 [<assembly: AssemblyCompany("15below Ltd")>]
 [<assembly: AssemblyProduct("FifteenBelow.Json")>]
-[<assembly: AssemblyCopyright("Copyright © 15below Ltd 2013")>]
+[<assembly: AssemblyCopyright("Copyright � 15below Ltd 2013")>]
 [<assembly: AssemblyTrademark("")>]
 
 [<assembly: AssemblyVersion("0.1.0.0")>]

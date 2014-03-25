@@ -40,7 +40,7 @@ module internal State =
 module internal Common =
 
     let property o name =
-        o.GetType().GetProperty(name).GetValue(o)
+        o.GetType().GetProperty(name).GetValue(o, null)
  
     let objKey o =
         property o "Key"
