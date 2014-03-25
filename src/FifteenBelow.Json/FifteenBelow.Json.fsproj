@@ -49,6 +49,7 @@
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
+    <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Reader.fs" />
     <Compile Include="Converters.fs" />
     <None Include="packages.config" />
