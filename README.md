@@ -46,7 +46,9 @@ let noneJson = JsonConvert.Serialize<OptionType> (noneType, settings)
 
 someJson:
 ```json
-{ "option": "HelloWorld" }
+{
+	"option": "HelloWorld"
+}
 ```
 
 noneJson:
