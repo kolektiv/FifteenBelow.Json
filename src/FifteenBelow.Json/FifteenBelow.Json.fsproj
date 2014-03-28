@@ -53,6 +53,7 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Reader.fs" />
     <Compile Include="Converters.fs" />
+    <Compile Include="Utils.fs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
