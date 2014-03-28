@@ -98,12 +98,19 @@ module internal Common =
  
             return read 0 List.empty |> Array.ofList }
 
-    let readObject func valueType =
+    let readObject func keyType valueType =
         json {
             let! tokenType = flip tokenType
             let! ignore = flip ignore
             let! value = flip value
             let! deserialize = flip deserialize
+
+            let key =
+                match keyType with
+                | t when t = typeof<string> -> fun o -> box (string o)
+                | t when t = typeof<Guid> -> fun o -> box (Guid (string o))
+                | t when t = typeof<int> -> fun o -> box (System.Int32.Parse o)
+                | _ -> failwith "key type not allowed"
  
             let rec read data =
                 match tokenType () with
@@ -113,7 +120,7 @@ module internal Common =
                 | JsonToken.EndObject ->
                     data
                 | _ ->
-                    let k = string (value ())
+                    let k = key (string (value ()))
                     ignore ()
                     let v = deserialize valueType
                     ignore ()
@@ -222,20 +229,23 @@ module internal Maps =
             .GetMethod("OfArray")
             .MakeGenericMethod([| args.[0]; args.[1] |])
             .Invoke(null, [| data |])
+
+    let allowedKey (t: Type) =
+        t = typeof<string> || t = typeof<Guid> || t = typeof<int>
  
     let isMap (t: Type) =
         t.IsGenericType 
             && t.GetGenericTypeDefinition () = typedefof<Map<_,_>>
-            && t.GetGenericArguments().[0] = typeof<string>
+            && allowedKey (t.GetGenericArguments().[0])
             && t.GetGenericArguments().[1] <> typedefof<obj>
  
     let readMap (t: Type) =
         json {
             let args = t.GetGenericArguments ()
-            let tupleType = FSharpType.MakeTupleType [| typeof<string>; args.[1] |]
+            let tupleType = FSharpType.MakeTupleType [| args.[0]; args.[1] |]
  
             let! data = readObject (fun k v -> 
-                FSharpValue.MakeTuple ([| k; v |], tupleType)) args.[1]
+                FSharpValue.MakeTuple ([| k; v |], tupleType)) args.[0] args.[1]
  
             return makeArray tupleType data |> makeMap args }
  
@@ -252,7 +262,7 @@ module internal Maps =
     let isBoxedMap (t: Type) =
         t.IsGenericType 
             && t.GetGenericTypeDefinition () = typedefof<Map<_,_>>
-            && t.GetGenericArguments().[0] = typeof<string>
+            && allowedKey (t.GetGenericArguments().[0])
             && t.GetGenericArguments().[1] = typedefof<obj>
 
     let typeKey = "$type"
@@ -270,7 +280,7 @@ module internal Maps =
                 let t = Type.GetType (o.Item(typeKey).Value<string> ())
                 let v = s.Deserialize (o.Item(valueKey).CreateReader (), t)
 
-                FSharpValue.MakeTuple ([| k; v |], tupleType)) typeof<Linq.JObject>
+                FSharpValue.MakeTuple ([| k; v |], tupleType)) args.[0] typeof<Linq.JObject>
 
             return makeArray tupleType data |> makeMap args }
 

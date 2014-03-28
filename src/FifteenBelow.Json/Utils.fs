@@ -11,11 +11,11 @@ open Newtonsoft.Json.Serialization
 [<RequireQualifiedAccess>]
 module Utils =
 
-    let uninstallDefaultConverter (converter: Type) =
-        let flags = BindingFlags.NonPublic ||| BindingFlags.Static
-        let convertersInfo = typeof<DefaultContractResolver>.GetMember ( "BuiltInConverters", flags)
-        let converters = (convertersInfo.[0] :?> FieldInfo).GetValue (null) :?> List<JsonConverter>
+    let private flags = BindingFlags.NonPublic ||| BindingFlags.Static
+    let private info = typeof<DefaultContractResolver>.GetMember ("BuiltInConverters", flags)
+    let private converters = (info.[0] :?> FieldInfo).GetValue (null) :?> List<JsonConverter>
 
+    let uninstallDefaultConverter (converter: Type) =
         match converters.FindIndex (fun x -> x.GetType () = converter) with
         | x when (x > -1) -> converters.RemoveAt (x)
         | _ -> ()

@@ -102,7 +102,7 @@ let listJson = JsonConvert.Serialize<ListType> (listType, settings)
 
 ### Maps
 
-The `MapConverter` supports the F# Map type, with the proviso that the map is of Type `Map<string,'T>`, where `'T` is not `obj`. The `BoxedMapConverter` supports maps of `Map<string,obj>`. This is an intentional design decision, as non-string keys don't map to JSON well. While it's possible to support a finite set of other key types which would have sensible string representations, the decision was made that it's better and more predictable to restrict the key type to `String` and convert other representations programatically on serialization/deserialization.
+The `MapConverter` supports the F# Map type, with the proviso that the map is of Type `Map<'K,'V>`, where `'V` is not `obj`. The `BoxedMapConverter` supports maps of `Map<'K,obj>`. Additionally, 'K must be either `string|int|Guid`. This is an intentional design decision, as non-string keys don't map to JSON well, and these 3 key types cover our common cases while mapping sensibly to string representations. While it's possible to support a (finite) set of other key types which would have sensible string representations, the decision was made that it's better and more predictable to restrict the key type to `string|int|Guid` and convert other representations programatically on serialization/deserialization.
 
 The `MapConverter` converts a map to a JSON object, while the `BoxedMapConverter` converts to a JSON object where each value is an object containing the type of the object and it's value.
 
@@ -127,12 +127,12 @@ let mapJson = JsonConvert.Serialize<MapType> (mapType, settings)
   "boxedMap": {
     "foo": {
       "$type": "System.Int",
-	  "value": 10
+      "value": 10
     },
-	"bar": {
-	  "$type": "System.String",
-	  "value": "twenty"
-	}
+    "bar": {
+      "$type": "System.String",
+      "value": "twenty"
+    }
   }
 }
 ```
