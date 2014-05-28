@@ -55,6 +55,7 @@
     <Compile Include="Converters.fs" />
     <Compile Include="Utils.fs" />
     <None Include="packages.config" />
+    <None Include="Converters.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
