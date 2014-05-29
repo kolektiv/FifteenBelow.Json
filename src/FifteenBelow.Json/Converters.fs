@@ -75,7 +75,7 @@ module internal Common =
 
     let mapName (n: string) =
         json {
-            return! read (fun s _ ->
+            return! write (fun s _ ->
                 (s.ContractResolver :?> DefaultContractResolver).GetResolvedPropertyName (n)) }
 
     let readArray next =
