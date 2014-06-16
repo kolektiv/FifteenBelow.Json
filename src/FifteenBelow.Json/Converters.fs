@@ -277,7 +277,7 @@ module internal Maps =
 
             let! data = readObject (fun k v -> 
                 let o = v :?> Linq.JObject
-                let t = Type.GetType (o.Item(typeKey).Value<string> ())
+                let t = Type.GetType (string (o.Item(typeKey)))
                 let v = s.Deserialize (o.Item(valueKey).CreateReader (), t)
 
                 FSharpValue.MakeTuple ([| k; v |], tupleType)) args.[0] typeof<Linq.JObject>
